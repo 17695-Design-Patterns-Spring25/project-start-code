@@ -1,6 +1,14 @@
 public class RoadSignSensor extends Sensor {
-    public RoadSignSensor() {
+    private SystemAlertHandler systemAlertHandler;
+
+    public RoadSignSensor(SystemAlertHandler systemAlertHandler) {
         super("RoadSignSensor");
+        this.systemAlertHandler = systemAlertHandler;
+    }
+
+    private void raiseAlert() {
+        Alert alert = new Alert(this.getDeviceId(), Alert.Severity.HIGH);
+        systemAlertHandler.handleAlert(alert);
     }
 
     public boolean checkLeftRoadSign() {
@@ -11,7 +19,5 @@ public class RoadSignSensor extends Sensor {
         return true;
     }
 
-    public Alert getAlert() {
-        return new Alert(this.getDeviceId(), Alert.Severity.HIGH);
-    }
+
 }

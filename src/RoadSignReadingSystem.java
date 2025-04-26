@@ -1,8 +1,10 @@
 public class RoadSignReadingSystem {
     private RoadSignSensor roadSignSensor;
+    private SystemAlertHandler systemAlertHandler; 
 
-    public RoadSignReadingSystem() {
-        this.roadSignSensor = new RoadSignSensor();
+    public RoadSignReadingSystem(SystemAlertHandler systemAlertHandler) {
+        this.systemAlertHandler = systemAlertHandler;
+        this.roadSignSensor = new RoadSignSensor(this.systemAlertHandler);
     }
 
     public boolean isClearToTurnLeft(){
@@ -11,9 +13,5 @@ public class RoadSignReadingSystem {
 
     public boolean isClearToTurnRight(){
         return roadSignSensor.checkRightRoadSign();
-    }
-
-    public Alert getAlertFromSensor() {
-        return roadSignSensor.getAlert();
     }
 }

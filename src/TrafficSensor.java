@@ -1,9 +1,16 @@
 public class TrafficSensor extends Sensor{
+    private SystemAlertHandler systemAlertHandler;
     private Signal signal;
 
-    public TrafficSensor(Signal signal) {
+    public TrafficSensor(Signal signal, SystemAlertHandler systemAlertHandler) {
         super("TrafficSensor");
         this.signal = signal;
+        this.systemAlertHandler = systemAlertHandler;
+    }
+    
+    private void raiseAlert(){
+        Alert alert = new Alert(this.getDeviceId(), Alert.Severity.HIGH);
+        systemAlertHandler.handleAlert(alert);
     }
 
     public boolean checkRightSignal(){
@@ -18,7 +25,5 @@ public class TrafficSensor extends Sensor{
         return signal.isStraight();
     }
 
-    public Alert getAlert(){
-        return new Alert(this.getDeviceId(), Alert.Severity.HIGH);
-    }
+
 }

@@ -13,6 +13,17 @@ public class MainController {
     static SurroundSensingSystemInterface surroundSensingSystemInterface;
     static RoadSignReadingSystem roadSignReadingSystem;
     static LeftSensor leftSensor;
+    static RightSensor rightSensor;
+
+    static NavigationAlertHandler navigationAlertHandler;
+    //static HumanAlertHandler humanAlertHandler; class does not yet exist
+    static TrafficSignalAlertHandler trafficSignalAlertHandler;
+    //static AutoAlertHandler autoAlertHandler; class does not yet exist
+    static SurroundSensingAlertHandler surroundSensingAlertHandler;
+    
+
+
+    static SystemAlertHandler systemAlertHandler;
 
     public static void main(String args[]) throws ParseException {
 
@@ -23,8 +34,7 @@ public class MainController {
             System.out.println("Options available:");
             System.out.println("1. To Start Car");
             System.out.println("2. Play music");
-            System.out.println("3. Simulate alert");
-            System.out.println("4. Exit the car!");
+            System.out.println("3. Exit the car!");
             System.out.println("Enter your option:");
             int choice = scan.nextInt();
 
@@ -36,9 +46,6 @@ public class MainController {
                     musicMediaUI.start();
                     break;
                 case 3:
-                    leftSensor.triggerAlert();
-                    break;
-                case 4:
                     return;
                 default:
                     System.out.println("Wrong option selected");
@@ -52,10 +59,19 @@ public class MainController {
         musicSystemController = new MusicSystemController();
         navigationSystemInterface = new NavigationSystemInterface();
         autoSystemInterface = new AutoSystemInterface();
-        trafficSignalSystemInterface = new TrafficSignalSystemInterface();
-        surroundSensingSystemInterface = new SurroundSensingSystemInterface();
-        roadSignReadingSystem = new RoadSignReadingSystem();
-        leftSensor = new LeftSensor();
+
+        // pass all alert handlers to the SystemAlertHandler
+        systemAlertHandler = new SystemAlertHandler(navigationAlertHandler, 
+                                                    trafficSignalAlertHandler, 
+                                                    surroundSensingAlertHandler,
+                                                    autoSystemInterface,
+                                                    autonomousCarController);
+        
+        //pass the systemAlertHandler to the various Interfaces
+        trafficSignalSystemInterface = new TrafficSignalSystemInterface(systemAlertHandler);
+        surroundSensingSystemInterface = new SurroundSensingSystemInterface(systemAlertHandler);
+        roadSignReadingSystem = new RoadSignReadingSystem(systemAlertHandler);
+        
 
         carUI.setDependencies(autonomousCarController);
         autonomousCarController.setDependencies(navigationSystemInterface,
@@ -64,6 +80,5 @@ public class MainController {
         musicMediaUI.setDependencies(musicSystemController);
         navigationSystemInterface.setDependencies(autonomousCarController);
         surroundSensingSystemInterface.setDependency(autonomousCarController);
-        leftSensor.setDependencies(surroundSensingSystemInterface);
     }
 }

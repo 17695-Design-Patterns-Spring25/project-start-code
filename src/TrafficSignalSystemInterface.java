@@ -1,10 +1,12 @@
 public class TrafficSignalSystemInterface {
     private Signal currentNearSignal;
     private TrafficSensor trafficSensor;
+    private SystemAlertHandler systemAlertHandler;
 
-    public TrafficSignalSystemInterface() {
+    public TrafficSignalSystemInterface(SystemAlertHandler systemAlertHandler) {
         this.currentNearSignal = new Signal();
-        this.trafficSensor = new TrafficSensor(this.currentNearSignal);
+        this.systemAlertHandler = systemAlertHandler; 
+        this.trafficSensor = new TrafficSensor(this.currentNearSignal, this.systemAlertHandler);
     }
 
     public boolean getSignalToGoStraight(){
@@ -17,9 +19,5 @@ public class TrafficSignalSystemInterface {
 
     public boolean getSignalToTurnRight(){
         return this.trafficSensor.checkRightSignal();
-    }
-
-    public Alert getAlertFromSensor(){
-        return this.trafficSensor.getAlert();
     }
 }
