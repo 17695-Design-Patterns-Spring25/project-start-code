@@ -59,10 +59,64 @@ public class CarUI {
                 break;
 
             case 2:
-                autonomousCarController.start();
+                //autonomousCarController.start();
+                System.out.println("Select input type for starting the car:");
+                System.out.println("1. Manual");
+                System.out.println("2. Voice");
+                System.out.println("3. Touch");
+                System.out.println("4. Remote");
+                int inputType = scan.nextInt();
+
+                switch (inputType) {
+                    case 1: 
+                        autonomousCarController.setStartStrategy(new ManualStartStrategy());
+                        break;
+                    case 2:
+                        autonomousCarController.setStartStrategy(new VoiceStartStrategy());
+                        break;
+                    case 3:
+                        autonomousCarController.setStartStrategy(new TouchStartStrategy());
+                        break;
+                    case 4:
+                        autonomousCarController.setStartStrategy(new RemoteStartStrategy());
+                        break;
+                    default:
+                        System.out.println("Invalid input type selected");
+                        return 0;
+                }
+                autonomousCarController.startVehicle();
                 break;
 
             case 3:
+                //return 1;
+                System.out.println("Select input type for starting the car:");
+                System.out.println("1. Manual");
+                System.out.println("2. Voice");
+                System.out.println("3. Touch");
+                System.out.println("4. Remote");
+                int inputType = scan.nextInt();
+
+                switch (inputType) {
+                    case 1: 
+                        autonomousCarController.setStopStrategy(new ManualStopStrategy());
+                        break;
+                    case 2:
+                        autonomousCarController.setStopStrategy(new VoiceStopStrategy());
+                        break;
+                    case 3:
+                        autonomousCarController.setStopStrategy(new TouchStopStrategy());
+                        break;
+                    case 4:
+                        autonomousCarController.setStopStrategy(new RemoteStopStrategy());
+                        break;
+                    default:
+                        System.out.println("Invalid input type selected");
+                        return 0;
+                }
+                autonomousCarController.stopVehicle();
+                break;
+            
+            case 4:
                 return 1;
 
             default:

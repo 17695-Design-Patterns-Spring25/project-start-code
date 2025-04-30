@@ -7,6 +7,9 @@ public class AutonomousCarController {
     private SurroundSensingSystemInterface surroundSensingSystemInterface;
     private RoadSignReadingSystem roadSignReadingSystem;
 
+    private StartStrategy startStrategy;
+    private StopStrategy stopStrategy;
+
 
     public void setDependencies(NavigationSystemInterface navigationSystemInterface,
                                 AutoSystemInterface autoSystemInterface,
@@ -28,6 +31,32 @@ public class AutonomousCarController {
 
     public void stop() {
         System.out.println("Destination reached, stopping the car");
+    }
+
+    public void startVehicle() {
+        if (startStrategy != null) {
+            startStrategy.start();
+        }
+        else {
+            System.out.println("No start strategy set");
+        }
+    }
+
+    public void stopVehicle() {
+        if (stopStrategy != null) {
+            stopStrategy.stop();
+        }
+        else {
+            System.out.println("No stop strategy set");
+        }
+    }
+
+    public void setStartStrategy(StartStrategy strategy) {
+        this.startStrategy = strategy;
+    }
+
+    public void setStopStrategy(StopStrategy strategy) {
+        this.stopStrategy = strategy;
     }
 
     public void turnLeft(Double afterDistance) {
